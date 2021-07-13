@@ -17,7 +17,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
-    @stack('css')
 </head>
 
 <body class="layout-fixed sidebar-mini-xs sidebar-closed">
@@ -64,7 +63,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </div>
                     </div>
                 </div>
-                <hr>
+
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     @include('layout.sidebar')
@@ -129,7 +128,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
-    @stack('script')
 </body>
 
 </html>
