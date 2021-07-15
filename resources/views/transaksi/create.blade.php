@@ -24,6 +24,8 @@
             padding: 12px
         }
 
+        .selectize-input input { height: 10px; }
+
     </style>
 @endpush
 @push('script')
@@ -33,8 +35,8 @@
     <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.5.4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="{{ asset('assets/selectize/js/standalone/selectize.min.js') }}">
-    </script>
+    <script type="text/javascript" src="{{ asset('assets/selectize/js/standalone/selectize.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/dist/jquery.loading.min.js') }}"></script>
     <script>
         $('.datemask').inputmask('dd/mm/yyyy', {
             'placeholder': 'dd/mm/yyyy'
@@ -76,6 +78,7 @@
 
         function draft() {
             var formdata = $('#frm').serialize();
+            $('#page').loading('start');
             $.ajax({
                 type: "post",
                 url: "{{ route('draftjurnal', ['do' => 'draft']) }}",
@@ -133,7 +136,7 @@
                     var a = $.dialog({
                         title: 'List Akun',
                         boxWidth: '80%',
-                        useBootstrap: false,
+                        useBootstrap: true,
                         content: "url:{{ url('loadcode') }}",
                         onContentReady: function() {
                             var self = this;
@@ -158,7 +161,7 @@
                     var i = e.target.id;
                     var a = $.dialog({
                         boxWidth: '80%',
-                        useBootstrap: false,
+                        useBootstrap: true,
                         title: 'List Akun',
                         content: "url:{{ url('loadcode') }}",
                         onContentReady: function() {
@@ -185,7 +188,7 @@
 @section('page')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-primary">
+            <div class="card card-primary" id="page">
                 <div class="card-header">
                     {{-- <h3 class="card-title"></h3> --}}
                     <div class="left">
@@ -224,12 +227,12 @@
                                 @for ($i = 0; $i < 300; $i++)
                                     <tr>
                                         <td>
-                                            <input type="text" class="form-control rounded-0" disabled
+                                            <input type="text" class="form-control form-control-sm rounded-0" disabled
                                                 placeholder="{{ $i + 1 }}." name="nom">
                                         </td>
                                         <td>
                                             {{-- <input type="text" disabled class="form-control rounded-0" value="Tanggal"> --}}
-                                            <input type="text" class="form-control datemask rounded-0"
+                                            <input type="text" class="form-control datemask rounded-0 form-control-sm"
                                                 data-inputmask-alias="datetime" placeholder="Tanggal"
                                                 data-inputmask-inputformat="dd/mm/yyyy" name="tanggal[]" data-mask=""
                                                 inputmode="numeric">
@@ -237,22 +240,22 @@
                                         <td width="40%">
                                             {{-- <input type="text" disabled class="form-control rounded-0" value="Keterangan"> --}}
                                             <input type="text" name="keterangan[]" placeholder="Keterangan"
-                                                class="form-control rounded-0" value="">
+                                                class="form-control rounded-0  form-control-sm" value="">
                                         </td>
                                         <td>
                                             {{-- <input type="text" disabled class="form-control rounded-0" value="Nominal"> --}}
                                             <input type="text" name="nominal[]" placeholder="Nominal"
-                                                class="form-control rounded-0 nominal" value="">
+                                                class="form-control rounded-0 nominal form-control-sm" value="">
                                         </td>
                                         <td>
                                             {{-- <input type="text" disabled class="form-control rounded-0" value="Debet"> --}}
-                                            <div class="input-group">
+                                            <div class="input-group  input-group-sm">
                                                 {{-- <input type="text"
                                                     class="form-control rounded-0 debet deb-{{ $i }}"
                                                     id="db-{{ $i }}" name="debet_{{ $i }}"
                                                     placeholder="Debet" readonly> --}}
                                                 <select name="debet[]" id="deb-{{ $i }}"
-                                                    class="form-control rounded-0 sel deb-{{ $i }}">
+                                                    class="form-control form-control-sm rounded-0 sel deb-{{ $i }}">
                                                 </select>
                                                 <span class="input-group-append">
                                                     <a class="btn btn-default btn-flat hover"
@@ -262,13 +265,13 @@
                                         </td>
                                         <td>
                                             {{-- <input type="text" disabled class="form-control rounded-0" value="Kredit"> --}}
-                                            <div class="input-group">
+                                            <div class="input-group input-group-sm">
                                                 {{-- <input type="text"
                                                     class="form-control rounded-0 debet deb-{{ $i }}"
                                                     id="db-{{ $i }}" name="debet_{{ $i }}"
                                                     placeholder="Debet" readonly> --}}
                                                 <select name="kredit[]" id="kred-{{ $i }}"
-                                                    class="form-control rounded-0 sel kred-{{ $i }}">
+                                                    class="form-control form-control-sm rounded-0 sel kred-{{ $i }}">
                                                 </select>
                                                 <span class="input-group-append">
                                                     <a class="btn btn-default btn-flat hover"
