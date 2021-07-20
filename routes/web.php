@@ -1,11 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CodeController;
-use App\Http\Controllers\HeaderJournalController;
+use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\Keuangan\HeaderJournalController;
+use App\Http\Controllers\Keuangan\JournalController;
 use App\Http\Controllers\Home;
-use App\Http\Controllers\JournalController;
+use App\Http\Controllers\OtorizationFirst;
+use App\Http\Controllers\ReportStatus;
 use App\Http\Controllers\Validasi\CoValidasi;
 use App\Models\Journal;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,25 +24,48 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [Home::class,'index']);
-Route::prefix('transaksi')->name('transaksi.')->group(function(){
+
+// Route::get('/home',function(){
+//     dd(Auth::user());
+// });
+
+// Route::prefix('dashboard')->name('dashboard.')->group(function(){
+//     Route::resource('report',ReportStatus::class);
+// });
+// Route::prefix('otorization')->name('otorization.')->group(function(){
+//     Route::resource('first',OtorizationFirst::class);
+// });
+// // Route::get('jsonrequest',HeaderJournalController::class,'jsonotorizfirst')->name('jsonrequest');
+// Route::post('simpandraft/{do}',[JournalController::class,'storeJurnal'])->name('draftjurnal');
+// //jurnal
+// Route::get('addmore/{header}',[JournalController::class,'addmore'])->name('addmore');
+// Route::get('getcodes/{keterangan}',[CodeController::class,'getcodes']);
+// Route::get('ceksaldo/{header}',[JournalController::class,'ceksaldo']);
+// // Destroy ajax
+// Route::delete('delheader/{id}',[HeaderJournalController::class,'destroy'])->name('delheader');
+
+// Route::get('requestfirst',[HeaderJournalController::class,'jsonotorizfirst'])->name('requestfirst');
+// Route::get('test/{id}',[HeaderJournalController::class,'test'])->name('test');
+// Route::get('jsoncode',[CodeController::class,'jsoncode'])->name('jsoncode');
+// Route::get('jurnal/{header}',[JournalController::class,'jurnal'])->name('jurnal');
+// Route::get('loadcode',[CodeController::class,'loadjson']);
+// //user input
+// Route::get('release/{id}',[JournalController::class,'makeRelease'])->name('makerelease');
+
+
+
+Route::prefix('admin')->middleware('auth')->name('admin.')->group(function(){
+    Route::resource('user',UserController::class);
+    Route::get('jsonUserAll',[UserController::class,'jsonUserAll'])->name('jsonUserAll');
+    Route::get('changepassword/{user}',[UserController::class,'changepassword'])->name('changepassword');
+});
+Route::prefix('keuangan')->middleware('auth')->name('keuangan.')->group(function(){
     Route::resource('jurnal',JournalController::class);
     Route::resource('header',HeaderJournalController::class);
+    Route::get('headerbytahun',[HeaderJournalController::class,'jsonheaderbytahun'])->name('headerbytahun');
 });
-
-Route::post('simpandraft/{do}',[JournalController::class,'storeJurnal'])->name('draftjurnal');
-
-//jurnal
-Route::get('addmore/{header}',[JournalController::class,'addmore'])->name('addmore');
-Route::get('getcodes/{keterangan}',[CodeController::class,'getcodes']);
-Route::get('ceksaldo/{header}',[JournalController::class,'ceksaldo']);
-
-// Destroy ajax
-Route::delete('delheader/{id}',[HeaderJournalController::class,'destroy'])->name('delheader');
-
-Route::get('headerbytahun',[HeaderJournalController::class,'jsonheaderbytahun'])->name('headerbytahun');
-
-Route::get('test/{id}',[HeaderJournalController::class,'test'])->name('test');
-Route::get('jsoncode',[CodeController::class,'jsoncode'])->name('jsoncode');
-Route::get('jurnal/{header}',[JournalController::class,'jurnal'])->name('jurnal');
-Route::get('loadcode',[CodeController::class,'loadjson']);
+Route::middleware('auth')->group(function(){
+    Route::get('/', function(){
+        return view('welcome');
+    });
+});

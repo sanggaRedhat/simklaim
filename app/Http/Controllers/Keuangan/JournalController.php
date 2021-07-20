@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Keuangan;
 
+use App\Http\Controllers\Controller;
+use App\Models\HeaderJournal;
 use App\Models\Journal;
 use App\Models\Vinputjurnal;
 use Carbon\Carbon;
@@ -18,8 +20,7 @@ class JournalController extends Controller
      */
     public function index()
     {
-        return view('transaksi.index');
-        // return view('info');
+        
     }
 
     /**
@@ -99,6 +100,17 @@ class JournalController extends Controller
 
     public function getDetailHeader($id){
 
+    }
+
+    public function makeRelease($id){
+        $dec_id = Crypt::decrypt($id);
+
+        $header = HeaderJournal::find($dec_id);
+        $header->update([
+            'status_header_id'=>2
+        ]);
+
+        return redirect()->route('transaksi.header.index');
     }
 
     /**

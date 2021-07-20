@@ -1,8 +1,14 @@
-@extends('layout.index')
+@extends('layouts.index')
 @section('header')
-
-
-    <h1 class="m-0"></h1>
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Keuangan</h1>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
 @endsection
 @push('css')
     <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
@@ -29,13 +35,13 @@
         $(document).ready(function() {
             $('#tbl_list').DataTable({
                 "aLengthMenu": [
-                    [5, 10, 25, 50, 100, 200, -1],
-                    [5, 10, 25, 50, 100, 200, "All"]
+                    [10, 25, 50, 100, 200, -1],
+                    [10, 25, 50, 100, 200, "All"]
                 ],
                 paging: true,
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('headerbytahun') }}',
+                ajax: "{{ route('keuangan.headerbytahun') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
@@ -72,14 +78,13 @@
 
 @endpush
 @section('page')
-    <div class="row">
         <div class="col-md-12">
-            <div class="card card-primary">
+            <div class="card card-default">
                 <div class="card-header">
                     {{-- <h3 class="card-title"></h3> --}}
                     <div class="card-tools">
-                        <a href="{{ route('transaksi.header.create') }}"
-                            class="btn btn-sm btn-social bg-gradient-success"><i class="fa fa-plus"></i></a>
+                        <a href="{{ route('keuangan.header.create') }}"
+                            class="btn btn-sm btn-social bg-gradient-success">Tambah Header Transaksi</a>
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -104,5 +109,4 @@
             </div>
             <!-- /.card -->
         </div>
-    </div>
 @endsection

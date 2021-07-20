@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Keuangan;
 
+use App\Http\Controllers\Controller;
 use App\Models\Code;
 use App\Models\HeaderJournal;
 use Carbon\Carbon;
@@ -18,26 +19,51 @@ class HeaderJournalController extends Controller
      */
     public function index()
     {
-        return view('header.index');
+        return view('keuangan.header.index');
     }
 
     public function jsonheaderbytahun(){
-        return DataTables::of(HeaderJournal::all())
+        return DataTables::of(HeaderJournal::where('status_header_id',1)->get())
         ->addIndexColumn()
         ->addColumn('pilih',function($query){
-            return '<a href="'.route('transaksi.jurnal.show',['jurnal'=>Crypt::encrypt($query->id)]).'" class="btn btn-xs btn-block btn-primary">Pilih</a>';    
+            return '<a href="'.route('keuangan.jurnal.show',['jurnal'=>Crypt::encrypt($query->id)]).'" class="btn btn-xs btn-block btn-primary">Pilih</a>';    
         })
         ->addColumn('status',function($query){
             if ($query->status_header_id == 1) {
                 return '<span class="badge badge-success">Draft</span>';
+            }if ($query->status_header_id == 2) {
+                return '<span class="badge badge-warning">Permintaan Otorisasi</span>';
             }else{
-                return '<span class="badge badge-danger">Released</span>';
+                return '<span class="badge badge-danger">Dirilis</span>';
             }
             
         })
         ->addColumn('hapus',function($query){
             if ($query->status_header_id == 1) {
-                return '<a href="javascript:;" class="btn btn-xs btn-danger btn-block" onclick="hapus('."'".route('transaksi.header.destroy', ['header' => Crypt::encrypt($query->id)])."'".')" >Hapus</a>';    
+                return '<a href="javascript:;" class="btn btn-xs btn-danger btn-block" onclick="hapus('."'".route('keuangan.header.destroy', ['header' => Crypt::encrypt($query->id)])."'".')" >Hapus</a>';    
+            }
+            
+        })
+        ->addColumn('tahun',function($query){
+            return date('Y',strtotime($query->created_at));
+        })
+        ->rawColumns(['pilih','status','tahun','hapus'])
+        ->make(true);
+    }
+
+    public function jsonotorizfirst(){
+        return DataTables::of(HeaderJournal::where('status_header_id',2)->get())
+        ->addIndexColumn()
+        ->addColumn('pilih',function($query){
+            return '<a href="'.route('otorization.first.show',['first'=>Crypt::encrypt($query->id)]).'" class="btn btn-xs btn-block btn-primary">Pilih</a>';    
+        })
+        ->addColumn('status',function($query){
+            if ($query->status_header_id == 1) {
+                return '<span class="badge badge-success">Draft</span>';
+            }if ($query->status_header_id == 2) {
+                return '<span class="badge badge-warning">Permintaan Otorisasi</span>';
+            }else{
+                return '<span class="badge badge-danger">Dirilis</span>';
             }
             
         })
@@ -61,7 +87,7 @@ class HeaderJournalController extends Controller
      */
     public function create()
     {
-        return view('header.create');
+        return view('keuangan.header.create');
     }
 
     /**
@@ -83,7 +109,7 @@ class HeaderJournalController extends Controller
             'status_header_id' => 1
         ]);
 
-        return redirect()->route('transaksi.header.index');
+        return redirect()->route('keuangan.header.index');
     }
 
     /**
