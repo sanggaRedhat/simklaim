@@ -144,7 +144,18 @@ class JournalController extends Controller
     public function getdatatransaksi($id){
         $transaksi = Journal::find($id);
 
-        return response()->json(['status'=>true,'keterangan'=>$transaksi->keterangan,'nominal'=>$transaksi->debet,'tanggal'=>date('d/m/Y',strtotime($transaksi->tanggal_transaksi))]);
+        $code_debet = Code::find($transaksi->debet_code_id);
+        $code_kredit = Code::find($transaksi->kredit_code_id);
+
+        return response()->json([
+            'status'=>true,
+            'keterangan'=>$transaksi->keterangan,
+            'nominal'=>$transaksi->debet,
+            'tanggal'=>date('d/m/Y',strtotime($transaksi->tanggal_transaksi)),
+            'debet_code'=>$code_debet->id,
+            'kredit_code'=>$code_kredit->id,
+            'id'=>$transaksi->id
+        ]);
     }
 
     public function getcodeinfo($id){
@@ -185,6 +196,7 @@ class JournalController extends Controller
         //     return view('transaksi.jurnal',$data);
         // }else{
             $data['id'] = $id;
+            $data['codes'] = Code::all();
             return view('keuangan.transaksi.create',$data);
         // }
     }
@@ -248,40 +260,19 @@ class JournalController extends Controller
         // dd($request);
         $keterangan = $request->keterangan;
         $nomi = $request->nominal;
-        $debet = $request->debet;
-        $kredit = $request->kredit;
         $tanggal = $request->tanggal;
         $nominal = str_replace('Rp. ','',$nomi);
         $fix = str_replace(',','',$nominal);
 
-        $s = Journal::where('linking',Crypt::decrypt($id))->get();
+        $j = Journal::find($id);
+        $j->update([
+            'debet' => $fix,
+            'kredit' => $fix,
+            'keterangan' => $keterangan,
+            'tanggal_transaksi' => Carbon::createFromFormat('d/m/Y',$tanggal),
+        ]);
 
-        foreach ($s as $key) {
-            if ($key->debet != 0) {
-                $j = Journal::find($key->id);
-                $j->update([
-                    'code_id' => $debet,
-                    'debet' => $fix,
-                    'kredit' => 0,
-                    'keterangan' => $keterangan,
-                    'tanggal_transaksi' => Carbon::createFromFormat('d/m/Y',$tanggal),
-                ]);    
-            }
-            if($key->kredit != 0){
-                $j = Journal::find($key->id);
-                $j->update([
-                    'code_id' => $kredit,
-                    'kredit' => $fix,
-                    'debet' => 0,
-                    'keterangan' => $keterangan,
-                    'tanggal_transaksi' => Carbon::createFromFormat('d/m/Y',$tanggal),
-                ]);
-            }
-
-            $header = $key->header_journals_id;
-        }
-
-        return redirect()->route('transaksi.jurnal.show',['jurnal'=>Crypt::encrypt($header)]);
+        return response()->json(['status'=>true]);
     }
 
     /**

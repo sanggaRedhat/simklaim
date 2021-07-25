@@ -27,6 +27,10 @@ class CreateStatusHeadersTable extends Migration
      */
     public function down()
     {
+        // Schema::table('')
+        Schema::table('header_journals', function (Blueprint $table) {
+            $table->dropForeign('header_journals_status_header_id_foreign');
+        });
         Schema::dropIfExists('status_headers');
     }
 }

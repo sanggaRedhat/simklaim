@@ -13,9 +13,13 @@
       <li class="nav-header">KEUANGAN</li>
       <li class="nav-item {{ open([
         'keuangan.header.index',
+        'keuangan.header.create',
+        'keuangan.jurnal.show'
         ]) }}">
         <a href="#" class="nav-link {{ set_active([
           'keuangan.header.index',
+          'keuangan.jurnal.show',
+          'keuangan.header.create'
           ]) }}">
           <i class="nav-icon fas fa-circle"></i>
           <p>
@@ -25,8 +29,12 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a href="{{ route('keuangan.header.index') }}" class="nav-link {{ set_active([
+            <a href="{{ route(
+              'keuangan.header.index'
+              ) }}" class="nav-link {{ set_active([
               'keuangan.header.index',
+              'keuangan.jurnal.show',
+              'keuangan.header.create'
               ]) }}">
               <i class="far fa-circle nav-icon"></i>
               <p>Rekening Koran</p>

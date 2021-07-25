@@ -115,6 +115,16 @@
                 decimalCharacter: '.',
             });
 
+            $('#editdebet').selectize({
+                create: false,
+                sortField: "text",
+            });
+
+            $('#editkredit').selectize({
+                create: false,
+                sortField: "text",
+            });
+
             $("#myModal").on('shown.bs.modal', function() {
                 $("#tanggal").focus();
             });
@@ -136,6 +146,27 @@
                         // $("#kredit").val("");
                         $("#nominal").val("");
                         $('#tbl_list').DataTable().ajax.reload();
+                    }
+                });
+            });
+
+            $("#frmedit").submit(function(e) {
+                e.preventDefault()
+                var formdata = $('#frmedit').serialize();
+                var id = $('#idtransaksi').val();
+                $.ajax({
+                    type: "post",
+                    url: "{{ url('keuangan/jurnal') }}/"+id,
+                    data: formdata,
+                    dataType: "json",
+                    success: function(response) {
+                        alertsukses();
+                        $("#edittanggal").val("");
+                        $("#editketerangan").val("");
+                        $("#editnominal").val("");
+                        $('#editModal').modal('hide');
+                        $('#tbl_list').DataTable().ajax.reload();
+
                     }
                 });
             });
@@ -202,8 +233,8 @@
 
         function edit(id) {
             var element = AutoNumeric.getAutoNumericElement('#editnominal')
-            var $select = $('#editdebet').selectize(); // This initializes the selectize control
-            var selectize = $select[0].selectize; // This stores the selectize object to a variable (with name 'selectize')
+            // var $select = $('#editdebet').selectize(); // This initializes the selectize control
+            // var selectize = $select[0].selectize; // This stores the selectize object to a variable (with name 'selectize')
 
             $.ajax({
                 type: "get",
@@ -212,15 +243,9 @@
                 success: function(response) {
                     $('#editketerangan').val(response.keterangan);
                     $('#edittanggal').val(response.tanggal);
+                    $('#idtransaksi').val(response.id);
                     element.set(response.nominal);
-
-                    // 2. Access the selectize object with methods later, for ex:
-                    // selectize.addOption(data);
-                    selectize.setValue('something', false);
-
-                    // Side note:
-                    // You can set a variable to the previous options with
-                    var old_options = selectize.settings;
+                    // selectize.setValue(1);
                 }
             });
             $('#editModal').modal('show');
@@ -236,7 +261,7 @@
 
             Toast.fire({
                 icon: 'success',
-                title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                title: 'Data berhasil dicatat!'
             });
         }
     </script>
@@ -270,10 +295,8 @@
                 </table>
             </div>
             <div class="card-footer">
-                <a href="javascript:;" onclick="modal()" class="btn btn-success btn-sm">Simpan Draft</a>
-
                 <a href="javascript:;" onclick="draft()" class="btn btn-primary btn-sm float-right">Simpan &
-                    Release</a>
+                    Rilis</a>
             </div>
             </form>
             <!-- /.card-body -->
@@ -306,8 +329,8 @@
                                     <input type="text" disabled class="form-control input-text" value="Tanggal">
                                 </div>
                                 <input type="text" class="form-control datemask" data-inputmask-alias="datetime"
-                                    placeholder="{{ date('d/m/Y') }}" data-inputmask-inputformat="dd/mm/yyyy"
-                                    id="tanggal" name="tanggal" data-mask="" inputmode="numeric">
+                                     data-inputmask-inputformat="dd/mm/yyyy"
+                                    id="tanggal" name="tanggal" data-mask="" autocomplete="off" inputmode="numeric">
                             </div>
                         </div>
                         <div class="form-group">
@@ -323,7 +346,7 @@
                                 <div class="input-group-prepend">
                                     <input type="text" disabled class="form-control input-text" value="Nominal">
                                 </div>
-                                <input type="text" class="form-control nominal" id="nominal" name="nominal">
+                                <input type="text" class="form-control nominal" autocomplete="off" id="nominal" name="nominal">
                             </div>
                         </div>
                         <div class="form-group">
@@ -367,7 +390,8 @@
                             <input type="text" disabled class="form-control header-text" value="FORM JURNAL TRANSAKSI">
                         </div>
                         @csrf
-                        <input type="hidden" name="id" value="{{ $id }}">
+                        @method('put')
+                        <input type="hidden" id="idtransaksi" name="id" value="{{ $id }}">
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -399,8 +423,13 @@
                                 <div class="input-group-prepend">
                                     <input type="text" disabled class="form-control input-text" value="Debet">
                                 </div>
-                                <select class="form-control select-tools rounded-0" id="editdebet" name="debet"
-                                    placeholder=""></select>
+                                <select class="form-control rounded-0" id="editdebet" name="debet"
+                                    placeholder="">
+                                    {{-- <option value="{{  }}"></option> --}}
+                                    @foreach ($codes as $item)
+                                        <option value="{{ $item->id }}">{{ $item->code." - ". $item->keterangan }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -408,8 +437,12 @@
                                 <div class="input-group-prepend">
                                     <input type="text" disabled class="form-control input-text" value="Kredit">
                                 </div>
-                                <select class="form-control select-tools rounded-0" id="editkredit" name="kredit"
-                                    placeholder=""></select>
+                                <select class="form-control rounded-0" id="editkredit" name="kredit"
+                                    placeholder="">
+                                    @foreach ($codes as $item)
+                                        <option value="{{ $item->id }}">{{ $item->code." - ". $item->keterangan }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                 </div>
