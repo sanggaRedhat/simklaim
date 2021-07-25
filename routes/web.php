@@ -36,19 +36,18 @@ use Illuminate\Support\Facades\Route;
 //     Route::resource('first',OtorizationFirst::class);
 // });
 // // Route::get('jsonrequest',HeaderJournalController::class,'jsonotorizfirst')->name('jsonrequest');
-// Route::post('simpandraft/{do}',[JournalController::class,'storeJurnal'])->name('draftjurnal');
+
 // //jurnal
 // Route::get('addmore/{header}',[JournalController::class,'addmore'])->name('addmore');
-// Route::get('getcodes/{keterangan}',[CodeController::class,'getcodes']);
+
 // Route::get('ceksaldo/{header}',[JournalController::class,'ceksaldo']);
 // // Destroy ajax
 // Route::delete('delheader/{id}',[HeaderJournalController::class,'destroy'])->name('delheader');
 
 // Route::get('requestfirst',[HeaderJournalController::class,'jsonotorizfirst'])->name('requestfirst');
 // Route::get('test/{id}',[HeaderJournalController::class,'test'])->name('test');
-// Route::get('jsoncode',[CodeController::class,'jsoncode'])->name('jsoncode');
+
 // Route::get('jurnal/{header}',[JournalController::class,'jurnal'])->name('jurnal');
-// Route::get('loadcode',[CodeController::class,'loadjson']);
 // //user input
 // Route::get('release/{id}',[JournalController::class,'makeRelease'])->name('makerelease');
 
@@ -63,9 +62,16 @@ Route::prefix('keuangan')->middleware('auth')->name('keuangan.')->group(function
     Route::resource('jurnal',JournalController::class);
     Route::resource('header',HeaderJournalController::class);
     Route::get('headerbytahun',[HeaderJournalController::class,'jsonheaderbytahun'])->name('headerbytahun');
+    Route::post('simpandraft/{do}',[JournalController::class,'storeJurnal'])->name('draftjurnal');
 });
 Route::middleware('auth')->group(function(){
+    Route::get('getcodes/{keterangan}',[CodeController::class,'getcodes']);
+    Route::get('loadcode',[CodeController::class,'loadjson']);
+    Route::get('jsoncode',[CodeController::class,'jsoncode'])->name('jsoncode');
     Route::get('/', function(){
         return view('welcome');
     });
+    Route::get('jsontransaksi/{id}',[JournalController::class,'jsontransaksi']);
+    Route::get('getcodeinfo/{id}',[JournalController::class,'getcodeinfo']);
+    Route::get('getdatatransaksi/{id}',[JournalController::class,'getdatatransaksi']);
 });

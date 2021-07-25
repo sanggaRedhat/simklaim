@@ -15,7 +15,7 @@ class AddStatusToHeaderJournals extends Migration
     {
         Schema::table('header_journals', function (Blueprint $table) {
             $table->unsignedBigInteger('status_header_id')->nullable();
-            $table->foreign('status_header_id')->references('id')->on('status_headers');
+            $table->foreign('status_header_id')->references('id')->on('status_headers')->onDelete('cascade');
         });
     }
 

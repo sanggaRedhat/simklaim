@@ -33,7 +33,7 @@ class CodeController extends Controller
     }
 
     public function getcodes($search){
-        $hasil = Code::where('keterangan','like','%'.$search.'%')->get();
+        $hasil = Code::where('keterangan','ilike','%'.$search.'%')->get();
 
         if (count($hasil) > 0) {
             $key = 0;
@@ -41,6 +41,7 @@ class CodeController extends Controller
                 $list[$key]['id']=$keys->id;
                 $list[$key]['name']=$keys->keterangan;
                 $list[$key]['code']=$keys->code;
+                $list[$key]['label']=$keys->code." - ".$keys->keterangan;
 
                 $key++;
             }

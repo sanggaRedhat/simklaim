@@ -15,12 +15,13 @@ class CreateJournalsTable extends Migration
     {
         Schema::create('journals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('code_id')->constrained('codes');
             $table->foreignId('header_journals_id')->constrained('header_journals');
             $table->float('debet');
             $table->float('kredit');
             $table->string('keterangan');
             $table->date('tanggal_transaksi');
+            $table->foreignId('debet_code_id')->constrained('codes');
+            $table->foreignId('kredit_code_id')->constrained('codes');
             $table->timestamps();
         });
     }

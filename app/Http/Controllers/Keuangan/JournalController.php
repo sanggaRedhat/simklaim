@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Keuangan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Code;
 use App\Models\HeaderJournal;
 use App\Models\Journal;
+use App\Models\ViewTransaksi;
 use App\Models\Vinputjurnal;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -44,12 +46,13 @@ class JournalController extends Controller
         $nominal = str_replace('Rp. ','',$request->nominal);
         $fix = str_replace(',','',$nominal);
         Journal::create([
-            'code_id' => 1,
-            'header_journals_id' => 8,
+            'header_journals_id' => Crypt::decrypt($request->id),
             'debet' => $fix,
-            'kredit' => 0,
+            'kredit' => $fix,
             'keterangan' => $request->keterangan,
-            'tanggal_transaksi' => Carbon::createFromFormat('d/m/Y',$request->tanggal)
+            'tanggal_transaksi' => Carbon::createFromFormat('d/m/Y',$request->tanggal),
+            'debet_code_id' => $request->debet,
+            'kredit_code_id' => $request->kredit
         ]);
 
         return response()->json(['status'=>true,'msg'=>'Berhasil Disimpan']);
@@ -98,6 +101,58 @@ class JournalController extends Controller
         
     }
 
+    public function jsontransaksi($id){
+        return DataTables::of(ViewTransaksi::where('header_journals_id',$id)->get())
+        ->addIndexColumn()
+        ->addColumn('tanggal',function($query){
+            return date('d/m/Y',strtotime($query->tanggal_transaksi));
+        })
+        ->addColumn('edit',function($query){
+            return '<a href="javascript:;" onclick="edit('.$query->id.')" class="btn btn-sm btn-block btn-primary">Edit</a>';
+        })
+        ->addColumn('delete',function($query){
+            return '<a href="javascript:;" class="btn btn-sm btn-block btn-danger">Delete</a>';
+        })
+        ->addColumn('code',function($query){
+            return '<a href="javascript:;" onclick="getcode('."'".$query->code."'".')" class="btn btn-sm btn-block btn-default">'.$query->code.'</a>';
+        })
+        ->addColumn('debet',function($query){
+            if ($query->number == 1) {
+                return number_format($query->amount,'2','.',',');
+            }else{
+                return 0;
+            }
+        })
+        ->addColumn('kredit',function($query){
+            if ($query->number == 2) {
+                return number_format($query->amount,'2','.',',');
+            }else{
+                return 0;
+            }
+        })
+        ->addColumn('keterangan',function($query){
+            if ($query->number == 2) {
+                return '&ensp;&ensp;&ensp;'.$query->keterangan;
+            }else{
+                return $query->keterangan;
+            }
+        })
+        ->rawColumns(['debet','kredit','hapus','tanggal','keterangan','edit','delete','code'])
+        ->make(true);
+    }
+
+    public function getdatatransaksi($id){
+        $transaksi = Journal::find($id);
+
+        return response()->json(['status'=>true,'keterangan'=>$transaksi->keterangan,'nominal'=>$transaksi->debet,'tanggal'=>date('d/m/Y',strtotime($transaksi->tanggal_transaksi))]);
+    }
+
+    public function getcodeinfo($id){
+        $code = Code::where('code',$id)->first();
+
+        return response()->json(['status'=>true,'code'=>$code->code,'keterangan'=>$code->keterangan]);
+    }
+
     public function getDetailHeader($id){
 
     }
@@ -122,16 +177,16 @@ class JournalController extends Controller
     public function show($id)
     {
         $transaksi = Journal::where('header_journals_id',Crypt::decrypt($id))->get();
-        if (count($transaksi) >= 1) {
-            $data['id'] = Crypt::decrypt($id);
-            // $data['transaksi'] = Vinputjurnal::where('header_journals_id',Crypt::decrypt($id))->get();
-            $data['totaldebet'] = Journal::where('header_journals_id',Crypt::decrypt($id))->sum('debet');
-            $data['totalkredit'] = Journal::where('header_journals_id',Crypt::decrypt($id))->sum('kredit');
-            return view('transaksi.jurnal',$data);
-        }else{
+        // if (count($transaksi) >= 1) {
+        //     $data['id'] = Crypt::decrypt($id);
+        //     // $data['transaksi'] = Vinputjurnal::where('header_journals_id',Crypt::decrypt($id))->get();
+        //     $data['totaldebet'] = Journal::where('header_journals_id',Crypt::decrypt($id))->sum('debet');
+        //     $data['totalkredit'] = Journal::where('header_journals_id',Crypt::decrypt($id))->sum('kredit');
+        //     return view('transaksi.jurnal',$data);
+        // }else{
             $data['id'] = $id;
-            return view('transaksi.create',$data);
-        }
+            return view('keuangan.transaksi.create',$data);
+        // }
     }
 
     public function addmore($id){
