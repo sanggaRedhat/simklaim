@@ -318,7 +318,11 @@
                 </table>
             </div>
             <div class="card-footer">
-                <a href="javascript:;" onclick="draft()" class="btn btn-success btn-sm float-right">Rilis Data</a>
+                <form action="{{ route('keuangan.statustransaksi.update',['statustransaksi'=>$id]) }}" method="post">
+                    @csrf
+                    @method('put')
+                    <button type="submit" class="btn btn-success btn-sm float-right">Rilis Data</button>
+                </form>
             </div>
             </form>
             <!-- /.card-body -->
