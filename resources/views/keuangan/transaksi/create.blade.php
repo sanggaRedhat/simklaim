@@ -251,6 +251,29 @@
             $('#editModal').modal('show');
         }
 
+        function delet(id){
+            $.confirm({
+                title: 'Konfirmasi',
+                content: 'Apakah Anda Yakin?',
+                buttons: {
+                    ya: function () {
+                        $.ajax({
+                            type: "delete",
+                            url: "{{ url('keuangan/jurnal') }}/"+id,
+                            dataType: "json",
+                            data: {"_token":"{{ csrf_token() }}",},
+                            success: function (response) {
+                                $('#tbl_list').DataTable().ajax.reload();
+                            }
+                        });
+                    },
+                    tidak: function () {
+                        
+                    },
+                }
+            });
+        }
+
         function alertsukses() {
             var Toast = Swal.mixin({
                 toast: true,
@@ -295,8 +318,7 @@
                 </table>
             </div>
             <div class="card-footer">
-                <a href="javascript:;" onclick="draft()" class="btn btn-primary btn-sm float-right">Simpan &
-                    Rilis</a>
+                <a href="javascript:;" onclick="draft()" class="btn btn-success btn-sm float-right">Rilis Data</a>
             </div>
             </form>
             <!-- /.card-body -->

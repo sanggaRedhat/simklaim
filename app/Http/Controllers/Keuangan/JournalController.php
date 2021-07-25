@@ -111,7 +111,7 @@ class JournalController extends Controller
             return '<a href="javascript:;" onclick="edit('.$query->id.')" class="btn btn-sm btn-block btn-primary">Edit</a>';
         })
         ->addColumn('delete',function($query){
-            return '<a href="javascript:;" class="btn btn-sm btn-block btn-danger">Delete</a>';
+            return '<a href="javascript:;" onclick="delet('.$query->id.')" class="btn btn-sm btn-block btn-danger">Delete</a>';
         })
         ->addColumn('code',function($query){
             return '<a href="javascript:;" onclick="getcode('."'".$query->code."'".')" class="btn btn-sm btn-block btn-default">'.$query->code.'</a>';
@@ -283,12 +283,11 @@ class JournalController extends Controller
      */
     public function destroy($id)
     {
-        $t = Journal::where('linking',$id)->first();
-        $header = Journal::where('linking',$id);
+        $transaksi= Journal::find($id);
         // $id = $header->header_journals_id;
-        $header->delete();
+        $transaksi->delete();
 
-        return response()->json(['status'=>true,'id'=>$t->header_journals_id]);
+        return response()->json(['status'=>true]);
     }
 
     public function ceksaldo($id){
