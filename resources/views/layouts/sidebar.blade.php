@@ -14,12 +14,14 @@
       <li class="nav-item {{ open([
         'keuangan.header.index',
         'keuangan.header.create',
-        'keuangan.jurnal.show'
+        'keuangan.jurnal.show',
+        'keuangan.authorize-m.index'
         ]) }}">
         <a href="#" class="nav-link {{ set_active([
           'keuangan.header.index',
           'keuangan.jurnal.show',
-          'keuangan.header.create'
+          'keuangan.header.create',
+          'keuangan.authorize-m.index'
           ]) }}">
           <i class="nav-icon fas fa-circle"></i>
           <p>
@@ -34,7 +36,7 @@
               ) }}" class="nav-link {{ set_active([
               'keuangan.header.index',
               'keuangan.jurnal.show',
-              'keuangan.header.create'
+              'keuangan.header.create',
               ]) }}">
               <i class="far fa-circle nav-icon"></i>
               <p>Rekening Koran</p>
@@ -44,6 +46,17 @@
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Kas Kecil</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('keuangan.authorize-m.index') }}" class="nav-link {{ 
+                set_active([
+                  'keuangan.authorize-m.index'
+                ])
+              }}">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Permintaan Otorisasi</p>
+              <span style="display:none" class="badge badge-info right reminder-authorize-m"></span>
             </a>
           </li>
         </ul>

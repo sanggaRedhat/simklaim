@@ -111,6 +111,7 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('assets/dist/js/demo.js') }}"></script>
     @stack('script')
+    {{-- <script src="{{ asset('assets/apps/autorize-m/authorize-m.js') }}"></script> --}}
 </body>
 
 </html>

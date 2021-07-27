@@ -51,6 +51,35 @@ class HeaderJournalController extends Controller
         ->make(true);
     }
 
+    public function jsonauthorizem(){
+        return DataTables::of(HeaderJournal::where('status_header_id',2)->get())
+        ->addIndexColumn()
+        ->addColumn('pilih',function($query){
+            return '<a href="'.route('keuangan.authorize-m.show',['authorize_m'=>Crypt::encrypt($query->id)]).'" class="btn btn-xs btn-block btn-primary">Pilih</a>';    
+        })
+        ->addColumn('status',function($query){
+            if ($query->status_header_id == 1) {
+                return '<span class="badge badge-success">Draft</span>';
+            }if ($query->status_header_id == 2) {
+                return '<span class="badge badge-warning">Permintaan Otorisasi</span>';
+            }else{
+                return '<span class="badge badge-danger">Dirilis</span>';
+            }
+            
+        })
+        ->addColumn('hapus',function($query){
+            if ($query->status_header_id == 1) {
+                return '<a href="javascript:;" class="btn btn-xs btn-danger btn-block" onclick="hapus('."'".route('keuangan.header.destroy', ['header' => Crypt::encrypt($query->id)])."'".')" >Hapus</a>';    
+            }
+            
+        })
+        ->addColumn('tahun',function($query){
+            return date('Y',strtotime($query->created_at));
+        })
+        ->rawColumns(['pilih','status','tahun','hapus'])
+        ->make(true);
+    }
+
     public function jsonotorizfirst(){
         return DataTables::of(HeaderJournal::where('status_header_id',2)->get())
         ->addIndexColumn()

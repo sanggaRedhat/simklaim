@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Keuangan\HeaderJournalController;
 use App\Http\Controllers\Keuangan\JournalController;
 use App\Http\Controllers\Home;
+use App\Http\Controllers\Keuangan\AuthorizeMutasiController;
 use App\Http\Controllers\Keuangan\StatusTransaction;
 use App\Http\Controllers\OtorizationFirst;
 use App\Http\Controllers\ReportStatus;
@@ -62,9 +63,13 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function(){
 Route::prefix('keuangan')->middleware('auth')->name('keuangan.')->group(function(){
     Route::resource('jurnal',JournalController::class);
     Route::resource('header',HeaderJournalController::class);
+    Route::resource('authorize-m',AuthorizeMutasiController::class);
     Route::get('headerbytahun',[HeaderJournalController::class,'jsonheaderbytahun'])->name('headerbytahun');
+    Route::get('headerauthorizem',[HeaderJournalController::class,'jsonauthorizem'])->name('headerauthorizem');
     Route::post('simpandraft/{do}',[JournalController::class,'storeJurnal'])->name('draftjurnal');
     Route::resource('statustransaksi', StatusTransaction::class);
+
+    Route::resource('reminder-authorize-m', AuthorizeMutasiController::class);
 });
 Route::middleware('auth')->group(function(){
     Route::get('getcodes/{keterangan}',[CodeController::class,'getcodes']);

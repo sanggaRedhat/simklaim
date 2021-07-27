@@ -187,18 +187,9 @@ class JournalController extends Controller
      */
     public function show($id)
     {
-        $transaksi = Journal::where('header_journals_id',Crypt::decrypt($id))->get();
-        // if (count($transaksi) >= 1) {
-        //     $data['id'] = Crypt::decrypt($id);
-        //     // $data['transaksi'] = Vinputjurnal::where('header_journals_id',Crypt::decrypt($id))->get();
-        //     $data['totaldebet'] = Journal::where('header_journals_id',Crypt::decrypt($id))->sum('debet');
-        //     $data['totalkredit'] = Journal::where('header_journals_id',Crypt::decrypt($id))->sum('kredit');
-        //     return view('transaksi.jurnal',$data);
-        // }else{
-            $data['id'] = $id;
-            $data['codes'] = Code::all();
-            return view('keuangan.transaksi.create',$data);
-        // }
+        $data['id'] = $id;
+        $data['codes'] = Code::all();
+        return view('keuangan.transaksi.create',$data);
     }
 
     public function addmore($id){
