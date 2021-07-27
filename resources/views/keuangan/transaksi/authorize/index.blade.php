@@ -31,15 +31,27 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                
+                <div class="row">
+                    @foreach ($saldo as $item)
+                    <div class="col-md-2 col-sm-6 col-12">
+                      <div class="info-box">
+                        <span class="info-box-icon bg-info"><i class="fas fa-arrow-right"></i></span>
+          
+                        <div class="info-box-content">
+                          <span class="info-box-text">{{ $item->code }}</span>
+                          <span class="info-box-number">{{ $item->amount }}</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                      </div>
+                      <!-- /.info-box -->
+                    </div>
+                    @endforeach
+                    <!-- /.col -->
+                  </div>
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
-    </div>
-    <div id="popover_html" style="display:none;">
-        <p><label>Name :</label>p_name</p>
-        <p><label>Address : </label>p_address</p>
     </div>
 
     <div class="modal fade" id="myModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog"

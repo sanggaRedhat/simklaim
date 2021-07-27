@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Keuangan;
 
 use App\Http\Controllers\Controller;
 use App\Models\Code;
+use App\Models\Vsaldo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class AuthorizeMutasiController extends Controller
 {
@@ -47,8 +49,10 @@ class AuthorizeMutasiController extends Controller
      */
     public function show($id)
     {
+        $header = Crypt::decrypt($id);
         $data['id'] = $id;
         $data['codes'] = Code::all();
+        $data['saldo'] = Vsaldo::where('header_journals_id',$header)->get();
         return view('keuangan.transaksi.authorize.index',$data);
     }
 
