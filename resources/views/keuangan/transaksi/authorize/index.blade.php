@@ -11,192 +11,156 @@
     </section>
 @endsection
 @push('css')
-    
+    <style>
+    .input-text {
+      text-align:right;
+    }
+
+    .header-text {
+        text-align: center;
+    }
+
+    .center {
+  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+}
+  </style>
 @endpush
 @push('script')
     
 @endpush
 @section('page')
-    <div class="col-md-12">
-        <div class="card card-default" id="page">
+<div class="row">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <h3 class="card-title">Header</h3>
+
+        <div class="card-tools">
+        </div>
+        <!-- /.card-tools -->
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+          <div class="form-group">
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                      <input type="text" disabled class="form-control rounded-0 form-control-sm input-text" value="Nomor Jurnal">
+                  </div>
+                  <input type="text" name="keterangan" class="form-control rounded-0 form-control-sm" readonly value="">
+              </div>
+          </div>
+          <div class="form-group">
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                      <input type="text" disabled class="form-control rounded-0 form-control-sm input-text" value="Inisial Jurnal">
+                  </div>
+                  <input type="text" name="keterangan" class="form-control rounded-0 form-control-sm" value="{{ $header->nama }}" readonly>
+              </div>
+          </div>
+          <div class="form-group">
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                      <input type="text" disabled class="form-control rounded-0 form-control-sm input-text" value="Keterangan">
+                  </div>
+                  <input type="text" name="keterangan" class="form-control rounded-0 form-control-sm" value="{{ $header->keterangan }}" readonly>
+              </div>
+          </div>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+        <div class="card">
             <div class="card-header">
-                {{-- <h3 class="card-title"></h3> --}}
-                {{-- <div class="left"> --}}
-                <a href="{{ route('keuangan.header.index') }}" class="btn btn-sm btn-social btn-default"><i
-                        class="fa fa-arrow-left"></i></a>
-                {{-- </div> --}}
-                <div class="card-tools">
-                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Tambah</button>
-                </div>
+              <h3 class="card-title">Result Saldo</h3>
             </div>
             <!-- /.card-header -->
-            <div class="card-body">
-                <div class="row">
+            <div class="card-body p-0">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th style="width: 10px">#</th>
+                    <th colspan="2">Kode Akun</th>
+                    <th style="width: 150px">Saldo Transaksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $no=1;
+                    @endphp
                     @foreach ($saldo as $item)
-                    <div class="col-md-2 col-sm-6 col-12">
-                      <div class="info-box">
-                        <span class="info-box-icon bg-info"><i class="fas fa-arrow-right"></i></span>
-          
-                        <div class="info-box-content">
-                          <span class="info-box-text">{{ $item->code }}</span>
-                          <span class="info-box-number">{{ $item->amount }}</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                      </div>
-                      <!-- /.info-box -->
-                    </div>
+                    <tr>
+                      <td>{{ $no++ }}.</td>
+                      <td style="width: 20px"><a href="{{ $item->code }}">{{ $item->code }}</a></td>
+                      <td>{{ $item->code_name }}</td>
+                      <td>Rp. {{ number_format($item->amount,2,",",".") }}</td>
+                    </tr>
                     @endforeach
-                    <!-- /.col -->
-                  </div>
+                </tbody>
+              </table>
             </div>
             <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
+          </div>
     </div>
 
-    <div class="modal fade" id="myModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog"
-        aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
-                            class="fas fa-times"></span></button>
-                </div>
-                <div class="modal-body">
-                    <form id="frm">
-                        <div class="form-group">
-                            <input type="text" disabled class="form-control header-text" value="FORM JURNAL TRANSAKSI">
-                        </div>
-                        @csrf
-                        <input type="hidden" name="id" value="{{ $id }}">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" disabled class="form-control input-text" value="Tanggal">
-                                </div>
-                                <input type="text" class="form-control datemask" data-inputmask-alias="datetime"
-                                     data-inputmask-inputformat="dd/mm/yyyy"
-                                    id="tanggal" name="tanggal" data-mask="" autocomplete="off" inputmode="numeric">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" disabled class="form-control input-text" value="Keterangan">
-                                </div>
-                                <input type="text" class="form-control" id="keterangan" name="keterangan">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" disabled class="form-control input-text" value="Nominal">
-                                </div>
-                                <input type="text" class="form-control nominal" autocomplete="off" id="nominal" name="nominal">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" disabled class="form-control input-text" value="Debet">
-                                </div>
-                                <select class="form-control select-tools rounded-0" id="debet" name="debet"
-                                    placeholder=""></select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" disabled class="form-control input-text" value="Kredit">
-                                </div>
-                                <select class="form-control select-tools rounded-0" id="kredit" name="kredit"
-                                    placeholder=""></select>
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-sm">Catat</button>
-                </div>
-                </form>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Result Pada Rekening Koran</h3>
             </div>
-        </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Posisi</th>
+                    <th>Total Saldo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                      <td>Debet</td>
+                      <td style="width: 150px">{{ number_format($saldodebetkredit->debet,2,",",".") }}</td>
+                    </tr>
+                    <tr>
+                      <td>Kredit</td>
+                      <td style="width: 150px">{{ number_format($saldodebetkredit->kredit,2,",",".") }}</td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
     </div>
+</div>
 
-    <div class="modal fade" id="editModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog"
-        aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
-                            class="fas fa-times"></span></button>
-                </div>
-                <div class="modal-body">
-                    <form id="frmedit">
-                        <div class="form-group">
-                            <input type="text" disabled class="form-control header-text" value="FORM JURNAL TRANSAKSI">
-                        </div>
-                        @csrf
-                        @method('put')
-                        <input type="hidden" id="idtransaksi" name="id" value="{{ $id }}">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" disabled class="form-control input-text" value="Tanggal">
-                                </div>
-                                <input type="text" class="form-control datemask" data-inputmask-alias="datetime"
-                                    placeholder="{{ date('d/m/Y') }}" data-inputmask-inputformat="dd/mm/yyyy"
-                                    id="edittanggal" name="tanggal" data-mask="" inputmode="numeric">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" disabled class="form-control input-text" value="Keterangan">
-                                </div>
-                                <input type="text" class="form-control" id="editketerangan" name="keterangan">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" disabled class="form-control input-text" value="Nominal">
-                                </div>
-                                <input type="text" class="form-control nominal" id="editnominal" name="nominal">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" disabled class="form-control input-text" value="Debet">
-                                </div>
-                                <select class="form-control rounded-0" id="editdebet" name="debet"
-                                    placeholder="">
-                                    {{-- <option value="{{  }}"></option> --}}
-                                    @foreach ($codes as $item)
-                                        <option value="{{ $item->id }}">{{ $item->code." - ". $item->keterangan }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" disabled class="form-control input-text" value="Kredit">
-                                </div>
-                                <select class="form-control rounded-0" id="editkredit" name="kredit"
-                                    placeholder="">
-                                    @foreach ($codes as $item)
-                                        <option value="{{ $item->id }}">{{ $item->code." - ". $item->keterangan }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-sm">Catat</button>
-                </div>
-                </form>
-            </div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card card-success shadow-sm">
+      <!-- /.card-header -->
+      <div class="card-body">
+        <div class="row">
+<div class="col-md-4"></div>
+          <div class="col-md-2">
+            <button class="btn btn-sm btn-default btn-block">Kembalikan</button>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-sm btn-default btn-block">Berikan Persetujuan</button>
+          </div>
+          <div class="col-md-4"></div>
         </div>
+      </div>
+      <!-- /.card-body -->
     </div>
+    <!-- /.card -->
+  </div>
+</div>
+    
 @endsection

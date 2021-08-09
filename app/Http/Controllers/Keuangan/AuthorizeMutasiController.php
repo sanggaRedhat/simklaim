@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Keuangan;
 
 use App\Http\Controllers\Controller;
 use App\Models\Code;
+use App\Models\HeaderJournal;
 use App\Models\Vsaldo;
+use App\Models\Vsaldodebetkredit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -53,6 +55,8 @@ class AuthorizeMutasiController extends Controller
         $data['id'] = $id;
         $data['codes'] = Code::all();
         $data['saldo'] = Vsaldo::where('header_journals_id',$header)->get();
+        $data['saldodebetkredit'] = Vsaldodebetkredit::where('header_journals_id',$header)->first();
+        $data['header'] = HeaderJournal::find($header);
         return view('keuangan.transaksi.authorize.index',$data);
     }
 

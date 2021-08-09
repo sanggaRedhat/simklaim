@@ -15,7 +15,7 @@ class CreateJournalsTable extends Migration
     {
         Schema::create('journals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('header_journals_id')->constrained('header_journals');
+            $table->foreignId('header_journals_id')->constrained('header_journals')->onDelete('cascade');
             $table->float('debet');
             $table->float('kredit');
             $table->string('keterangan');
