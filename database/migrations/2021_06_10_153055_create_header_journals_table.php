@@ -28,9 +28,10 @@ class CreateHeaderJournalsTable extends Migration
      */
     public function down()
     {
-        // Schema::table('header_journals', function (Blueprint $table) {
-        //     $table->dropForeign('header_journals_status_header_id_foreign');
-        // });
+        Schema::table('journals', function (Blueprint $table) {
+            $table->dropForeign('journals_kredit_code_id_foreign');
+            $table->dropForeign('journals_debet_code_id_foreign');
+        });
         Schema::dropIfExists('header_journals');
     }
 }

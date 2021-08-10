@@ -28,6 +28,9 @@ class CreateCodesTable extends Migration
      */
     public function down()
     {
+        Schema::table('journals', function (Blueprint $table) {
+            $table->dropForeign('journals_header_journals_id_foreign');
+        });
         Schema::dropIfExists('codes');
     }
 }
