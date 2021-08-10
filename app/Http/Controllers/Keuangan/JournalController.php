@@ -102,7 +102,7 @@ class JournalController extends Controller
     }
 
     public function jsontransaksi($id){
-        return DataTables::of(ViewTransaksi::where('header_journals_id',$id)->get())
+        return DataTables::of(ViewTransaksi::where('header_journals_id',Crypt::decrypt($id))->get())
         ->addIndexColumn()
         ->addColumn('tanggal',function($query){
             return date('d/m/Y',strtotime($query->tanggal_transaksi));

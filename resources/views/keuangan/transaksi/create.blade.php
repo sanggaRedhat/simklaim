@@ -58,7 +58,7 @@
                 paging: false,
                 processing: true,
                 serverSide: true,
-                ajax: "{{ url('jsontransaksi') }}/1",
+                ajax: "{{ url('jsontransaksi') }}/"+"{{ $id }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'

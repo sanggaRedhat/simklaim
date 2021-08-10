@@ -74,9 +74,9 @@
             <section class="content">
 
                 <div class="container-fluid">
-                    <div class="row">
+                    {{-- <div class="row"> --}}
                         @yield('page')
-                    </div>
+                    {{-- </div> --}}
                 </div>
             </section>
             <!-- /.content -->
