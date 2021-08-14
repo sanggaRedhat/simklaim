@@ -8,6 +8,7 @@ use App\Models\HeaderJournal;
 use App\Models\Journal;
 use App\Models\ViewTransaksi;
 use App\Models\Vinputjurnal;
+use App\Models\VjournalFormat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -156,6 +157,12 @@ class JournalController extends Controller
             'kredit_code'=>$code_kredit->id,
             'id'=>$transaksi->id
         ]);
+    }
+
+    public function jsonresultjurnal($code,$idheader){
+        return DataTables::of(VjournalFormat::where('header_journals_id',$idheader)->where('code',$code)->get())
+        ->addIndexColumn()
+        ->make(true);
     }
 
     public function getcodeinfo($id){

@@ -81,4 +81,6 @@ Route::middleware('auth')->group(function(){
     Route::get('jsontransaksi/{id}',[JournalController::class,'jsontransaksi']);
     Route::get('getcodeinfo/{id}',[JournalController::class,'getcodeinfo']);
     Route::get('getdatatransaksi/{id}',[JournalController::class,'getdatatransaksi']);
+
+    Route::get('jsonresultjurnal/{code}/{id}',[JournalController::class,'jsonresultjurnal']);
 });
