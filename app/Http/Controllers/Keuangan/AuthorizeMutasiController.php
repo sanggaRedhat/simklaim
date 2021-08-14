@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Keuangan;
 use App\Http\Controllers\Controller;
 use App\Models\Code;
 use App\Models\HeaderJournal;
+use App\Models\ValidationFinance;
 use App\Models\Vsaldo;
 use App\Models\Vsaldodebetkredit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Gate;
 
 class AuthorizeMutasiController extends Controller
 {
@@ -57,7 +60,26 @@ class AuthorizeMutasiController extends Controller
         $data['saldo'] = Vsaldo::where('header_journals_id',$header)->get();
         $data['saldodebetkredit'] = Vsaldodebetkredit::where('header_journals_id',$header)->first();
         $data['header'] = HeaderJournal::find($header);
+        $data['code_dummy'] = Code::where('keterangan','Dummy')->first();
+        $data['header_dummy'] = HeaderJournal::where('nama','Dummy')->first();
         return view('keuangan.transaksi.authorize.index',$data);
+    }
+
+    public function authorizeJournal(Request $request){
+        if (Gate::allows('role-validation-finance')) {
+            ValidationFinance::create([
+                'header_journal_id'=>Crypt::decrypt($request->idheader),
+                'user_id'=>Auth::user()->id
+            ]);
+
+            $header = HeaderJournal::find(Crypt::decrypt($request->idheader));
+            $header->update([
+                'status_header_id'=>3
+            ]);
+            return response()->json(['status'=>true]);
+        }else{
+            return response()->json(['status'=>false]);
+        }
     }
 
     /**

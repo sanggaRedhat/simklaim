@@ -15,7 +15,8 @@
         'keuangan.header.index',
         'keuangan.header.create',
         'keuangan.jurnal.show',
-        'keuangan.authorize-m.index'
+        'keuangan.authorize-m.index',
+        'keuangan.authorize-m.show'
         ]) }}">
         <a href="#" class="nav-link {{ set_active([
           'keuangan.header.index',
@@ -51,7 +52,8 @@
           <li class="nav-item">
             <a href="{{ route('keuangan.authorize-m.index') }}" class="nav-link {{ 
                 set_active([
-                  'keuangan.authorize-m.index'
+                  'keuangan.authorize-m.index',
+                  'keuangan.authorize-m.show'
                 ])
               }}">
               <i class="far fa-circle nav-icon"></i>

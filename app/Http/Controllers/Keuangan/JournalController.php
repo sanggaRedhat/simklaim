@@ -160,8 +160,14 @@ class JournalController extends Controller
     }
 
     public function jsonresultjurnal($code,$idheader){
-        return DataTables::of(VjournalFormat::where('header_journals_id',$idheader)->where('code',$code)->get())
+        return DataTables::of(VjournalFormat::where('header_journals_id',Crypt::decrypt($idheader))->where('code',$code)->get())
         ->addIndexColumn()
+        ->addColumn('debet',function($query){
+            return number_format($query->debet,'2','.',',');
+        })
+        ->addColumn('kredit',function($query){
+            return number_format($query->kredit,'2','.',',');
+        })
         ->make(true);
     }
 
@@ -268,6 +274,8 @@ class JournalController extends Controller
             'kredit' => $fix,
             'keterangan' => $keterangan,
             'tanggal_transaksi' => Carbon::createFromFormat('d/m/Y',$tanggal),
+            'debet_code_id' => $request->editdebet,
+            'kredit_code_id' => $request->editkredit
         ]);
 
         return response()->json(['status'=>true]);

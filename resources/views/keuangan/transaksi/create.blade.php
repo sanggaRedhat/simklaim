@@ -235,7 +235,8 @@
             var element = AutoNumeric.getAutoNumericElement('#editnominal')
             // var $select = $('#editdebet').selectize(); // This initializes the selectize control
             // var selectize = $select[0].selectize; // This stores the selectize object to a variable (with name 'selectize')
-
+            var $select = $('#editdebet').selectize();
+            var $select_kredit = $('#editkredit').selectize();
             $.ajax({
                 type: "get",
                 url: "{{ url('getdatatransaksi') }}/" + id,
@@ -244,6 +245,10 @@
                     $('#editketerangan').val(response.keterangan);
                     $('#edittanggal').val(response.tanggal);
                     $('#idtransaksi').val(response.id);
+                    // $('#editdebet option[value=2]').prop('selected', true);
+                    // $('#editdebet').val("2");
+                    $select[0].selectize.setValue(response.debet_code);
+                    $select_kredit[0].selectize.setValue(response.kredit_code);
                     element.set(response.nominal);
                     // selectize.setValue(1);
                 }
@@ -449,9 +454,9 @@
                                 <div class="input-group-prepend">
                                     <input type="text" disabled class="form-control input-text" value="Debet">
                                 </div>
-                                <select class="form-control rounded-0" id="editdebet" name="debet"
+                                <select class="form-control rounded-0" id="editdebet" name="editdebet"
                                     placeholder="">
-                                    {{-- <option value="{{  }}"></option> --}}
+                                    
                                     @foreach ($codes as $item)
                                         <option value="{{ $item->id }}">{{ $item->code." - ". $item->keterangan }}</option>
                                     @endforeach
@@ -463,7 +468,7 @@
                                 <div class="input-group-prepend">
                                     <input type="text" disabled class="form-control input-text" value="Kredit">
                                 </div>
-                                <select class="form-control rounded-0" id="editkredit" name="kredit"
+                                <select class="form-control rounded-0" id="editkredit" name="editkredit"
                                     placeholder="">
                                     @foreach ($codes as $item)
                                         <option value="{{ $item->id }}">{{ $item->code." - ". $item->keterangan }}</option>
