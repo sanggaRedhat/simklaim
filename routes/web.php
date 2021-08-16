@@ -7,6 +7,7 @@ use App\Http\Controllers\Keuangan\HeaderJournalController;
 use App\Http\Controllers\Keuangan\JournalController;
 use App\Http\Controllers\Home;
 use App\Http\Controllers\Keuangan\AuthorizeMutasiController;
+use App\Http\Controllers\Keuangan\OperationalController;
 use App\Http\Controllers\Keuangan\StatusTransaction;
 use App\Http\Controllers\OtorizationFirst;
 use App\Http\Controllers\ReportStatus;
@@ -64,6 +65,7 @@ Route::prefix('keuangan')->middleware('auth')->name('keuangan.')->group(function
     Route::resource('jurnal',JournalController::class);
     Route::resource('header',HeaderJournalController::class);
     Route::resource('authorize-m',AuthorizeMutasiController::class);
+    Route::resource('operasional',OperationalController::class);
     Route::get('headerbytahun',[HeaderJournalController::class,'jsonheaderbytahun'])->name('headerbytahun');
     Route::get('headerauthorizem',[HeaderJournalController::class,'jsonauthorizem'])->name('headerauthorizem');
     Route::post('simpandraft/{do}',[JournalController::class,'storeJurnal'])->name('draftjurnal');

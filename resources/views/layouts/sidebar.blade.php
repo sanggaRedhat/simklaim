@@ -16,7 +16,8 @@
         'keuangan.header.create',
         'keuangan.jurnal.show',
         'keuangan.authorize-m.index',
-        'keuangan.authorize-m.show'
+        'keuangan.authorize-m.show',
+        'keuangan.operasional.index'
         ]) }}">
         <a href="#" class="nav-link {{ set_active([
           'keuangan.header.index',
@@ -24,7 +25,7 @@
           'keuangan.header.create',
           'keuangan.authorize-m.index'
           ]) }}">
-          <i class="nav-icon fas fa-circle"></i>
+          <i class="nav-icon fas fa-paper-plane"></i>
           <p>
             Mutasi
             <i class="right fas fa-angle-left"></i>
@@ -39,14 +40,17 @@
               'keuangan.jurnal.show',
               'keuangan.header.create',
               ]) }}">
-              <i class="far fa-circle nav-icon"></i>
+              <i class="fas fa-minus nav-icon"></i>
               <p>Rekening Koran</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Kas Kecil</p>
+            <a href="{{ route('keuangan.operasional.index') }}" class="nav-link {{ 
+              set_active([
+                'keuangan.operasional.index'
+              ]) }}">
+              <i class="fas fa-minus nav-icon"></i>
+              <p>Kas Operasional</p>
             </a>
           </li>
           <li class="nav-item">
@@ -56,11 +60,46 @@
                   'keuangan.authorize-m.show'
                 ])
               }}">
-              <i class="far fa-circle nav-icon"></i>
+              <i class="fas fa-minus nav-icon"></i>
               <p>Permintaan Otorisasi</p>
               <span style="display:none" class="badge badge-info right reminder-authorize-m"></span>
             </a>
           </li>
+          <li class="nav-item {{ open([
+        'admin.user.index',
+        'admin.user.create',
+        'admin.user.edit'
+        ]) }}">
+        <a href="#" class="nav-link {{ set_active([
+          'admin.user.index',
+          'admin.user.create',
+          'admin.user.edit'
+          ]) }}">
+          <i class="nav-icon fas fa-paperclip"></i>
+          <p>
+            Administrasi Keuangan
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{ route('admin.user.index') }}" class="nav-link {{ set_active([
+              'admin.user.index',
+              'admin.user.create',
+              'admin.user.edit'
+              ]) }}">
+              <i class="fas fa-minus nav-icon"></i>
+              <p>Form Investasi</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas fa-minus nav-icon"></i>
+              <p>Manajemen Kode Akun</p>
+            </a>
+          </li>
+        </ul>
+      </li>
         </ul>
       </li>
       <li class="nav-header">ADMINISTRATOR</li>
@@ -87,13 +126,13 @@
               'admin.user.create',
               'admin.user.edit'
               ]) }}">
-              <i class="far fa-circle nav-icon"></i>
+              <i class="fas fa-minus nav-icon"></i>
               <p>User</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
+              <i class="fas fa-minus nav-icon"></i>
               <p>Level</p>
             </a>
           </li>
