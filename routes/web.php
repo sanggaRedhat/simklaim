@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CodeController;
 use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\Dashboard\DashboardFinanceController;
 use App\Http\Controllers\Keuangan\HeaderJournalController;
 use App\Http\Controllers\Keuangan\JournalController;
 use App\Http\Controllers\Home;
@@ -72,6 +73,9 @@ Route::prefix('keuangan')->middleware('auth')->name('keuangan.')->group(function
     Route::resource('statustransaksi', StatusTransaction::class);
 
     Route::resource('reminder-authorize-m', AuthorizeMutasiController::class);
+});
+Route::prefix('dashboard')->middleware('auth')->name('dashboard.')->group(function(){
+    Route::resource('keuangan',DashboardFinanceController::class);
 });
 Route::middleware('auth')->group(function(){
     Route::get('getcodes/{keterangan}',[CodeController::class,'getcodes']);

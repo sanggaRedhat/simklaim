@@ -32,5 +32,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('role-validation-finance', function ($user){
             return $user->hasAnyRole('role_validation_finance');
         });
+
+        Gate::define('role-finance', function ($user){
+            return $user->hasAnyRole('role_finance');
+        });
     }
 }
