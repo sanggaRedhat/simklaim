@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Bank extends Model
+class VsaldoAll extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $table='vsaldo_all';
 }

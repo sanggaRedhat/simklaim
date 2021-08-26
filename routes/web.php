@@ -3,14 +3,20 @@
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CodeController;
 use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\Dashboard\DashboardFinanceBank;
 use App\Http\Controllers\Dashboard\DashboardFinanceController;
 use App\Http\Controllers\Keuangan\HeaderJournalController;
 use App\Http\Controllers\Keuangan\JournalController;
 use App\Http\Controllers\Home;
+use App\Http\Controllers\Keuangan\AdminBankController;
+use App\Http\Controllers\Keuangan\AdminFinanceController;
 use App\Http\Controllers\Keuangan\AuthorizeMutasiController;
 use App\Http\Controllers\Keuangan\OperationalController;
+use App\Http\Controllers\Keuangan\PrintAController;
+use App\Http\Controllers\Keuangan\PrintBController;
 use App\Http\Controllers\Keuangan\StatusTransaction;
 use App\Http\Controllers\OtorizationFirst;
+use App\Http\Controllers\Penjaminan\DashboardIjpController;
 use App\Http\Controllers\ReportStatus;
 use App\Http\Controllers\Validasi\CoValidasi;
 use App\Models\Journal;
@@ -69,21 +75,32 @@ Route::prefix('keuangan')->middleware('auth')->name('keuangan.')->group(function
     Route::resource('operasional',OperationalController::class);
     Route::get('headerbytahun',[HeaderJournalController::class,'jsonheaderbytahun'])->name('headerbytahun');
     Route::get('headerauthorizem',[HeaderJournalController::class,'jsonauthorizem'])->name('headerauthorizem');
+    Route::get('headerreleased',[PrintAController::class,'jsonreleased']);
     Route::post('simpandraft/{do}',[JournalController::class,'storeJurnal'])->name('draftjurnal');
     Route::resource('statustransaksi', StatusTransaction::class);
+    Route::resource('cetak-a', PrintAController::class);
+    Route::resource('cetak-b', PrintBController::class);
+    Route::resource('admin-keuangan', AdminFinanceController::class);
+    Route::resource('admin-bank', AdminBankController::class);
+    Route::get('admin-bank', [AdminFinanceController::class,'banks'])->name('admin-keuangan.admin-bank');
+    Route::get('jsonallcode',[AdminFinanceController::class,'jsonallcode'])->name('jsonallcode');
+    Route::get('jsonallbank',[AdminBankController::class,'jsonallbank'])->name('jsonallbank');
 
     Route::resource('reminder-authorize-m', AuthorizeMutasiController::class);
 });
 Route::prefix('dashboard')->middleware('auth')->name('dashboard.')->group(function(){
     Route::resource('keuangan',DashboardFinanceController::class);
+    Route::resource('bank',DashboardFinanceBank::class);
+    Route::get('grafiksaldobank',[DashboardFinanceBank::class,'jsonsaldobank'])->name('grafiksaldobank');
+});
+Route::prefix('penjaminan')->middleware('auth')->name('penjaminan.')->group(function(){
+    Route::resource('ijp',DashboardIjpController::class);
 });
 Route::middleware('auth')->group(function(){
     Route::get('getcodes/{keterangan}',[CodeController::class,'getcodes']);
     Route::get('loadcode',[CodeController::class,'loadjson']);
     Route::get('jsoncode',[CodeController::class,'jsoncode'])->name('jsoncode');
-    Route::get('/', function(){
-        return view('welcome');
-    });
+    Route::get('/', [DashboardFinanceController::class,'index'])->name('dashboard.keuangan.index');
     Route::get('jsontransaksi/{id}',[JournalController::class,'jsontransaksi']);
     Route::get('getcodeinfo/{id}',[JournalController::class,'getcodeinfo']);
     Route::get('getdatatransaksi/{id}',[JournalController::class,'getdatatransaksi']);

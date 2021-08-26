@@ -31,7 +31,8 @@
                         <div class="progress-bar" style="width: 100%"></div>
                     </div>
                     <span class="progress-description">
-                        <a style="color: white" href="">Informasi Saldo Pada Akun Bank</a>
+                        <a style="color: white" href="{{ route('dashboard.bank.index') }}">Informasi Saldo Pada Akun
+                            Bank</a>
                     </span>
                 </div>
                 <!-- /.info-box-content -->
@@ -40,7 +41,7 @@
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-12">
+        {{-- <div class="col-md-4 col-sm-6 col-12">
             <div class="info-box bg-gradient-success">
                 <span class="info-box-icon"><i class="fas fa-cash-register"></i></span>
 
@@ -59,9 +60,9 @@
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
-        </div>
+        </div> --}}
         <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-12">
+        {{-- <div class="col-md-4 col-sm-6 col-12">
             <div class="info-box bg-gradient-warning">
                 <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
 
@@ -80,7 +81,7 @@
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
-        </div>
+        </div> --}}
         <!-- /.col -->
     </div>
 @endsection
